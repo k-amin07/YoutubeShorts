@@ -21,3 +21,14 @@ Potentially relevant papers from ACM:
 1. [Analyzing YouTube Content: Methodological Considerations for Technical Communication Research](https://dl.acm.org/doi/abs/10.1145/3615335.3623005?casa_token=D3TvrGYqS7cAAAAA:iplVVwwkEzANqj1WVbuUWGkMGOYlIruoGVRpf6ycCo0w-DfX4b-cOgEhfc2ZP5cZLB1RszvPUESTpw)
 2. [PDAS: Probability-Driven Adaptive Streaming for Short Video](https://dl.acm.org/doi/abs/10.1145/3503161.3551571?casa_token=T2r8FkNbjlAAAAAA:iq-Jwc4Os9WzBKXUfYHK9PDCHdm6xzKv4fbEyYJl29VsNKB6Ryc_zUKjfqT_k4Qgz8YBh3yCpMRixw)
 3. [A Framework for Improving Web Affordability and Inclusiveness](https://dl.acm.org/doi/10.1145/3603269.3604872)
+
+Available PDFs
+[On_the_Analysis_of_YouTube_QoE_in_Cellular_Networks_through_in-Smartphone_Measurements.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226130/On_the_Analysis_of_YouTube_QoE_in_Cellular_Networks_through_in-Smartphone_Measurements.pdf)
+[Framework for improving web affordibility and inclusiveness.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226123/Framework.for.improving.web.affordibility.and.inclusiveness.pdf)
+[Beauty_is_in_the_Eye_of_the_Smartphone_Holder_A_Data_Driven_Analysis_of_YouTube_Mobile_QoE.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226122/Beauty_is_in_the_Eye_of_the_Smartphone_Holder_A_Data_Driven_Analysis_of_YouTube_Mobile_QoE.pdf)
+[Affordable Web Accessibility A Case for Cheaper ARIA.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226121/Affordable.Web.Accessibility.A.Case.for.Cheaper.ARIA.pdf)
+[YouTube_in_the_move_Understanding_the_performance_of_YouTube_in_cellular_networks.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226120/YouTube_in_the_move_Understanding_the_performance_of_YouTube_in_cellular_networks.pdf)
+[YouTube_all_around_Characterizing_YouTube_from_mobile_and_fixed-line_network_vantage_points.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226119/YouTube_all_around_Characterizing_YouTube_from_mobile_and_fixed-line_network_vantage_points.pdf)
+[Toward Efficient Short-Video Sharing in the YouTube.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226118/Toward.Efficient.Short-Video.Sharing.in.the.YouTube.pdf)
+[Short-Form Videos Degrade Our Capacity to Retain Intentions.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226114/Short-Form.Videos.Degrade.Our.Capacity.to.Retain.Intentions.pdf)
+
