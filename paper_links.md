@@ -1,4 +1,5 @@
 IEEE Search Params 1: ("All Metadata":youtube) AND ("All Metadata":affordability OR "All Metadata":measurement)
+
 IEEE Search Params 2: ("All Metadata":youtube AND "All Metadata":shorts) AND ("All Metadata":affordability OR "All Metadata":measurement)
 
 Potentially relevant papers from IEEE
@@ -13,8 +14,8 @@ Might be less relevant but could still be useful papers from IEEE
 2. [A Wrapper for Automatic Measurements with YouTube's Native Android App](https://ieeexplore.ieee.org/document/8506488)
 
 ACM search is a bit trickier, OR conditions are not working properly. Sort all of these terms by latest, otherwise, a lot of search results are from early 2000's
-ACM Search Params 1:  [All: youtube] AND [All: shorts] AND [All: measurement]
 
+ACM Search Params 1:  [All: youtube] AND [All: shorts] AND [All: measurement]
 
 Potentially relevant papers from ACM:
 1. [Analyzing YouTube Content: Methodological Considerations for Technical Communication Research](https://dl.acm.org/doi/abs/10.1145/3615335.3623005?casa_token=D3TvrGYqS7cAAAAA:iplVVwwkEzANqj1WVbuUWGkMGOYlIruoGVRpf6ycCo0w-DfX4b-cOgEhfc2ZP5cZLB1RszvPUESTpw)
