@@ -1,1 +1,11 @@
 List your ideas here:
+
+Some research questions:
+- YouTube shorts on web do not have audio controls, they just use the volume level from the last played video. Does that translate to video quality as well?
+- What quality does the ad load at.
+- At what point does YouTube fetch the ad?
+- How many previous shorts does YouTube cache?
+- If you see an ad and scroll to the next video and then scroll back up, does the ad play again?
+- If it does play again, is it cached or is it refetched
+- What are the identifiers that differentiate a regular short from an ad, specifically for an automation script.
+- Does the type of connection have an impact on the ad buffering? 2G/3G/4G/wifi. We can use chrome dev tools to emulate this.  
