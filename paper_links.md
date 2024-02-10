@@ -23,12 +23,12 @@ Potentially relevant papers from ACM:
 3. [A Framework for Improving Web Affordability and Inclusiveness](https://dl.acm.org/doi/10.1145/3603269.3604872)
 
 Available PDFs
-[On_the_Analysis_of_YouTube_QoE_in_Cellular_Networks_through_in-Smartphone_Measurements.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226130/On_the_Analysis_of_YouTube_QoE_in_Cellular_Networks_through_in-Smartphone_Measurements.pdf)
-[Framework for improving web affordibility and inclusiveness.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226123/Framework.for.improving.web.affordibility.and.inclusiveness.pdf)
-[Beauty_is_in_the_Eye_of_the_Smartphone_Holder_A_Data_Driven_Analysis_of_YouTube_Mobile_QoE.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226122/Beauty_is_in_the_Eye_of_the_Smartphone_Holder_A_Data_Driven_Analysis_of_YouTube_Mobile_QoE.pdf)
-[Affordable Web Accessibility A Case for Cheaper ARIA.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226121/Affordable.Web.Accessibility.A.Case.for.Cheaper.ARIA.pdf)
-[YouTube_in_the_move_Understanding_the_performance_of_YouTube_in_cellular_networks.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226120/YouTube_in_the_move_Understanding_the_performance_of_YouTube_in_cellular_networks.pdf)
-[YouTube_all_around_Characterizing_YouTube_from_mobile_and_fixed-line_network_vantage_points.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226119/YouTube_all_around_Characterizing_YouTube_from_mobile_and_fixed-line_network_vantage_points.pdf)
-[Toward Efficient Short-Video Sharing in the YouTube.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226118/Toward.Efficient.Short-Video.Sharing.in.the.YouTube.pdf)
-[Short-Form Videos Degrade Our Capacity to Retain Intentions.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226114/Short-Form.Videos.Degrade.Our.Capacity.to.Retain.Intentions.pdf)
+1. [On the Analysis of YouTube QoE in Cellular Networks through in-Smartphone Measurements.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226130/On_the_Analysis_of_YouTube_QoE_in_Cellular_Networks_through_in-Smartphone_Measurements.pdf)
+2. [Framework for improving web affordibility and inclusiveness.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226123/Framework.for.improving.web.affordibility.and.inclusiveness.pdf)
+3. [Beauty is in the Eye of the Smartphone Holde A Data Driven Analysis of YouTube Mobile QoE.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226122/Beauty_is_in_the_Eye_of_the_Smartphone_Holder_A_Data_Driven_Analysis_of_YouTube_Mobile_QoE.pdf)
+4. [Affordable Web Accessibility A Case for Cheaper ARIA.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226121/Affordable.Web.Accessibility.A.Case.for.Cheaper.ARIA.pdf)
+5. [YouTube in the move Understanding the performance of YouTube in cellular networks.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226120/YouTube_in_the_move_Understanding_the_performance_of_YouTube_in_cellular_networks.pdf)
+6. [YouTube all around Characterizing YouTube from mobile and fixed-line network vantage points.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226119/YouTube_all_around_Characterizing_YouTube_from_mobile_and_fixed-line_network_vantage_points.pdf)
+7. [Toward Efficient Short-Video Sharing in the YouTube.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226118/Toward.Efficient.Short-Video.Sharing.in.the.YouTube.pdf)
+8. [Short-Form Videos Degrade Our Capacity to Retain Intentions.pdf](https://github.com/k-amin07/YoutubeShorts/files/14226114/Short-Form.Videos.Degrade.Our.Capacity.to.Retain.Intentions.pdf)
 
