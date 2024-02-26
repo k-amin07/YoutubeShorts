@@ -2,8 +2,9 @@
 
 
 from PIL import Image
-import subprocess
 
+import json
+import subprocess
 import pytesseract
 import re
 import pickle
@@ -69,6 +70,7 @@ for i in range(starting_frame,count+1,4):
         try:
             vid_data['VIDEO ID'] = vid_data['VIDEO ID'].replace('[X]','').strip()
             vid_data['RESOLUTION'], vid_data['FRAME_RATE'] = re.findall(r'(\d+x\d+)@(\d+)',vid_data['VIDEO FORMAT'])[0]
+            vid_data['AUDIO_FORMAT'] = vid_data['AUDIO_FORMAT'].split('opus')[0] + 'opus'
             print(vid_data['BANDWIDTH'])
             bandwidth = re.findall(r'([-+]?\d*\.?\d+)',vid_data['BANDWIDTH'])   
             readahead = re.findall(r'([-+]?\d*\.?\d+)',vid_data['READAHEAD'])
@@ -99,7 +101,7 @@ for i in range(starting_frame,count+1,4):
         with open('stats_for_nerds.pkl', 'wb') as handle:
             pickle.dump(all_data,handle)
 
-print(all_data)
+print(json.dumps(all_data, indent=4))
 
 with open('stats_for_nerds.pkl', 'wb') as handle:
     pickle.dump(all_data,handle)
