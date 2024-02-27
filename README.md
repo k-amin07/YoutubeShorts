@@ -12,7 +12,7 @@ This is the primary approach since it is easiest to implement and is pretty much
 - Run the extract data from frames script. It turns the image to grayscale, extracts the text using OCR, converts it to a dictionary and saves it to a pickle file. Do not commit your recorded video or extracted frames to git, just commit the pickle file but name it appropriately.
 
 ### MITM Proxy
-This one requires a Rooted Android device. It **may** work with iOS devices (see the bold text in the 7th point below) but I am unable to verify as I do not own an iOS device.
+This one requires a Rooted Android device. It **may** work with iOS devices (see the bold text in the 7th point below) but I am unable to verify as I do not own an iOS device. This approach requires a WiFi connection, so we would need to figure out a way to throttle the WiFi speed to emulate a 2G connection **OR** enable systemwide HTTP proxy on mobile data.
 - Download MITM proxy. Extract the zip and open terminal in the extracted folder.
 - Make the mitmweb file executable using
     ```
