@@ -1,7 +1,35 @@
 # YoutubeShorts
 Youtube shorts project for Topics in Internet Research Course 
 
-Using git:
+## Currently Working Approaches
+### Screen Recording
+This is the primary approach since it is easiest to implement and is pretty much device agnostic. Use it if you do not have an Android device or are unable to root your device.
+- Enable stats for nerds in general section for YouTube app settings. Navigate to shorts, click the three dot menu and click stats for nerds.
+- Switch the phone to 2G network mode, do not use WiFi.
+- Screen record youtube shorts MANUALLY. Make sure that the short plays to completion before scrolling. Autoscrolling solutions will be inaccurate as shorts vary in length. An elaborate mechanism can be established to automate this without compromising data quality, but it is easier to just scroll it manually.
+- Make sure you have pytesseract installed with the English Language package. Search for distro-specific instructions but generally you need tesseract-ocr and at least one language package before it can be used with python.
+- Use the read_frames script to extract frames from the video. The script is currently configured to extract 4 frames per second. The framerate for screenrecording that I used was 60 fps. This is not the framerate at which the shorts are being fetched. This is the framerate.
+- Run the extract data from frames script. It turns the image to grayscale, extracts the text using OCR, converts it to a dictionary and saves it to a pickle file. Do not commit your recorded video or extracted frames to git, just commit the pickle file but name it appropriately.
+
+### MITM Proxy
+This one requires a Rooted Android device. It **may** work with iOS devices (see the bold text in the 7th point below) but I am unable to verify as I do not own an iOS device.
+- Download MITM proxy. Extract the zip and open terminal in the extracted folder.
+- Make the mitmweb file executable using
+    ```
+        chmod +x ./mitmweb
+    ```
+- Run MITM web.
+    ```
+        ./mitmweb
+    ```
+ - Root your device with Magisk. **This is absolutely necessary** for this setup to work. You should be able to find instructions for rooting your device on forum.xda-developers.com
+ - Make sure your phone and the computer running the mitm server are on the same WiFi network.
+ - Open Wifi settings on Android, select your wifi network and add the IP address of your laptop and MITM's port to the network's proxy settings.
+ - Open Chrome on Android, go to mitm.it. If mitm is configured correctly, you would see certificate install instructions. **This page contains instructions for iOS devices as well**, could be worth exploring. In the instructions for Android, choose the Magisk module. Install it in Magisk, and reboot the device.
+ - Open `mitmweb` on your laptop and you should be able to see all requests that are made by your phone. 
+
+----
+## Instructions on Using git:
 
 - You would first need to add an ssh keypair to your github account, refer to [github docs](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) for that.
 - Add your username and email to the git command line. For example:
