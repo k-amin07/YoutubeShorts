@@ -8,7 +8,7 @@ This is the primary approach since it is easiest to implement and is pretty much
 - Switch the phone to 2G network mode, do not use WiFi.
 - Screen record youtube shorts MANUALLY. Make sure that the short plays to completion before scrolling. Autoscrolling solutions will be inaccurate as shorts vary in length. An elaborate mechanism can be established to automate this without compromising data quality, but it is easier to just scroll it manually.
 - Make sure you have pytesseract installed with the English Language package. Search for distro-specific instructions but generally you need tesseract-ocr and at least one language package before it can be used with python.
-- Use the read_frames script to extract frames from the video. The script is currently configured to extract 4 frames per second. The framerate for screenrecording that I used was 60 fps. This is not the framerate at which the shorts are being fetched. This is the framerate.
+- Use the read_frames script to extract frames from the video. The script is currently configured to extract 4 frames per second. The framerate for screenrecording that I used was 60 fps. This is not the framerate at which the shorts are being fetched; this is the framerate at which the phone recorded the screen.
 - Run the extract data from frames script. It turns the image to grayscale, extracts the text using OCR, converts it to a dictionary and saves it to a pickle file. Do not commit your recorded video or extracted frames to git, just commit the pickle file but name it appropriately.
 
 ### MITM Proxy
