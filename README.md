@@ -25,7 +25,8 @@ This one requires a Rooted Android device. It **may** work with iOS devices (see
  - Root your device with Magisk. **This is absolutely necessary** for this setup to work. You should be able to find instructions for rooting your device on forum.xda-developers.com
  - Make sure your phone and the computer running the mitm server are on the same WiFi network.
  - Open Wifi settings on Android, select your wifi network and add the IP address of your laptop and MITM's port to the network's proxy settings.
- - Open Chrome on Android, go to mitm.it. If mitm is configured correctly, you would see certificate install instructions. **This page contains instructions for iOS devices as well**, could be worth exploring. In the instructions for Android, choose the Magisk module. Install it in Magisk, and reboot the device.
+ - Open Chrome on Android, go to mitm.it. If mitm is configured correctly, you would see certificate install instructions. **This page contains instructions for iOS devices as well**, could be worth exploring.
+ - In the instructions for Android, choose the Magisk module. Install it in Magisk, and reboot the device. YouTube uses SSL pinning, so without this Magisk module, mitm would not be able to capture the traffic from YouTube.
  - Open `mitmweb` on your laptop and you should be able to see all requests that are made by your phone. 
 
 ----
