@@ -27,8 +27,8 @@ This one requires a Rooted Android device. It **may** work with iOS devices (see
  - Open Wifi settings on Android, select your wifi network and add the IP address of your laptop and MITM's port to the network's proxy settings.
  - Open Chrome on Android, go to mitm.it. If mitm is configured correctly, you would see certificate install instructions. **This page contains instructions for iOS devices as well**, could be worth exploring.
  - In the instructions for Android, choose the Magisk module. Install it in Magisk, and reboot the device. YouTube uses SSL pinning, so without this Magisk module, mitm would not be able to capture the traffic from YouTube.
- - Open `mitmweb` on your laptop and you should be able to see all requests that are made by your phone. 
-
+ - Open `mitmweb` on your laptop and you should be able to see all requests that are made by your phone.
+ - This [repo](https://github.com/ddxv/mobile-network-traffic?tab=readme-ov-file#open-source-link-1) also contains instructions on rooting Waydroid and using mitm. It relies on LSPosed for traffic monitoring, however the instructions in this section do not require LSPosed.
 ----
 ## Instructions on Using git:
 
