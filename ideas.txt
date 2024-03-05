@@ -9,3 +9,6 @@ Some research questions:
 - If it does play again, is it cached or is it refetched
 - What are the identifiers that differentiate a regular short from an ad, specifically for an automation script.
 - Does the type of connection have an impact on the ad buffering? 2G/3G/4G/wifi. We can use chrome dev tools to emulate this.  
+
+Can we leverage virtual android machines for the experiment?
+
