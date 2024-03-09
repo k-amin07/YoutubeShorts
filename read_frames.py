@@ -1,13 +1,13 @@
 import cv2
 
-vidcap = cv2.VideoCapture('./2G.mp4')
+vidcap = cv2.VideoCapture('samplevid.mp4')  # replace with your video file
 
 count = 0
 
 success,image = vidcap.read()
 
-# First 16 seconds in my recording were janky, skipping those.
-while(count < 16*60 and success):
+# First 1 seconds in my recording were janky, skipping those.
+while(count < 1*60 and success):
     success,image = vidcap.read()
     count += 1
 
