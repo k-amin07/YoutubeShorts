@@ -23,6 +23,9 @@ starting_frame = 1  # can be adjusted to start from a different frame
 key_list = ['DEVICE', 'CPN', 'VIDEO ID', 'VIDEO FORMAT', 'AUDIO FORMAT', 'VOLUME/NORMALIZED',
             'BANDWIDTH', 'READAHEAD', 'VIEWPORT', 'DROPPED FRAMES', 'MYSTERY TEXT']
 
+valid_chars_for_id = list('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789')
+
+
 # Adjust according to specific bounding boxes:
 #stored as: left, top, right, bottom
 device_bb = [50, 154, 242, 178]
@@ -68,8 +71,8 @@ for i in range(starting_frame, count + 1, 4):
         try:
             for box in range(len(bounding_boxes)):
                 bb = bounding_boxes[box]
-                if any(coordinate < 0 for point in bb for coordinate in point) or any(
-                        coordinate > max(image.size) for point in bb for coordinate in point):
+                if any(coordinate < 0 for coordinate in bb) or any(
+                        coordinate > max(image.size) for coordinate in bb):
                     # Skip if bounding box coordinates are invalid
                     continue
 
@@ -82,6 +85,11 @@ for i in range(starting_frame, count + 1, 4):
                 if image_text.strip() and box != 12:  # For all cases besides sponsor
                     key = key_list[box]
                     vid_data[key] = image_text.strip()
+                    if(key == "VIDEO ID"):
+                        ## TO DO: Replace this with the last example in Tesseract Documentation. 
+                        ## OCR confuses 7 with ? in frame0002 for example. Get closest matches does not pick that up, even with very low cutoff
+                        ## Last example here may help https://github.com/sirfz/tesserocr?tab=readme-ov-file#advanced-api-examples
+                        image_text = ''.join(map(lambda x: difflib.get_close_matches(x,valid_chars_for_id, cutoff=0.1)[0],vid_data[key]))
                     print(image_text.strip())
 
                 elif image_text.strip() and box == 12:  # For sponsor case

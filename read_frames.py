@@ -1,6 +1,6 @@
 import cv2
 
-vidcap = cv2.VideoCapture('samplevid.mp4')  # replace with your video file
+vidcap = cv2.VideoCapture('./samplevid.mp4')  # replace with your video file
 
 count = 0
 
