@@ -114,5 +114,5 @@ for i in range(starting_frame, count + 1, 4):
 
 print(json.dumps(all_data, indent=4))
 
-with open('sample_stats.pkl', 'wb') as handle:
+with open('./stats/sample_stats.pkl', 'wb') as handle:
     pickle.dump(all_data, handle)
