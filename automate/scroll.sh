@@ -1,30 +1,38 @@
 #!/bin/sh
 COUNTER=1
 
+## There would be buffering time for 2G, this works fine on wifi, would have to adjust for 2G.
+intermittent_wait=14
+
 while true
 do
-  # UI Automator does not grab the screen content unless the screen is static. We need to pause the video for this. Its an old abandoned library but it lets us control any app
-  adb shell input tap 540 1100
-  echo "dumping stats"
-  adb exec-out uiautomator dump /dev/tty >> ./stats/$COUNTER.xml
-  adb shell input tap 540 1100
-  echo "\n\n" >> ./stats/$COUNTER.xml
-  sleep 15
-  adb shell input tap 540 1100
-  adb exec-out uiautomator dump /dev/tty >> ./stats/$COUNTER.xml
-  adb shell input tap 540 1100
-  echo "\n\n" >> ./stats/$COUNTER.xml
-  sleep 15
-  adb shell input tap 540 1100
-  adb exec-out uiautomator dump /dev/tty >> ./stats/$COUNTER.xml
-  adb shell input tap 540 1100
-  echo "\n\n" >> ./stats/$COUNTER.xml
-  sleep 15
-  adb shell input tap 540 1100
-  adb exec-out uiautomator dump /dev/tty >> ./stats/$COUNTER.xml
-  adb shell input tap 540 1100
-  echo "\n\n" >> ./stats/$COUNTER.xml
+  for i in {1..4}
+  do
+    tap_x=$((540 + RANDOM % 50 - 25))
+    tap_y=$((1100 + RANDOM % 50 - 25))
+
+    tap_x2=$((540 + RANDOM % 50 - 25))
+    tap_y2=$((1100 + RANDOM % 50 - 25))
+
+    adb shell input tap $tap_x $tap_y
+    echo "dumping stats"
+    sleep 2
+    adb exec-out uiautomator dump /dev/tty >> ./data/stats/$COUNTER.xml
+    IMAGE_NAME="${COUNTER}_${i}"
+    adb exec-out screencap -p > ./data/screenshots/$IMAGE_NAME.png
+    adb shell input tap $tap_x2 $tap_y2
+    echo -e "\n\n" >> ./data/stats/$COUNTER.xml
+    sleep $intermittent_wait
+  done
+  swipe_x_start=$((500 + RANDOM % 50 - 25))
+  swipe_y_start=$((2000 + RANDOM % 50 - 25))
+  swipe_x_end=$((500 + RANDOM % 50 - 25))
+  swipe_y_end=$((1000 + RANDOM % 50 - 25))
+  duration=$((RANDOM % 100 + 40))
   echo "swiping up"
-  # Swipe to next short - the command takes x-start, y-start, x-end, y-end and the time taken to execute the swipe. We can slow it down but 100ms is fine
-  adb shell input touchscreen swipe 500 2000 500 1000 100
+  # Swipe to next short with slight diagonal movement
+  adb shell input touchscreen swipe $swipe_x_start $swipe_y_start $swipe_x_end $swipe_y_end $duration
+  sleep 1
+  # Increment counter
+  ((COUNTER++))
 done
