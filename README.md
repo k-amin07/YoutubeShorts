@@ -13,7 +13,7 @@ This is the primary approach since it is easiest to implement and is pretty much
 
 ### MITM Proxy
 This one requires a Rooted Android device. It **may** work with iOS devices (see the bold text in the 7th point below) but I am unable to verify as I do not own an iOS device. This approach requires a WiFi connection, so we would need to figure out a way to throttle the WiFi speed to emulate a 2G connection **OR** enable systemwide HTTP proxy on mobile data.
-- Download MITM proxy. Extract the zip and open terminal in the extracted folder.
+- Download MITM proxy from [here](https://mitmproxy.org/downloads/). Extract the zip and open terminal in the extracted folder.
 - Make the mitmweb file executable using
     ```
         chmod +x ./mitmweb
