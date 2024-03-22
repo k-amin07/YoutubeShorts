@@ -6,6 +6,8 @@ intermittent_wait=14
 
 while true
 do
+  mkdir -p ./data/stats/${COUNTER}
+  mkdir -p ./data/screenshots/${COUNTER}
   for i in {1..4}
   do
     tap_x=$((540 + RANDOM % 50 - 25))
@@ -14,14 +16,15 @@ do
     tap_x2=$((540 + RANDOM % 50 - 25))
     tap_y2=$((1100 + RANDOM % 50 - 25))
 
+    echo "pausing shorts"
     adb shell input tap $tap_x $tap_y
-    echo "dumping stats"
     sleep 2
-    adb exec-out uiautomator dump /dev/tty >> ./data/stats/$COUNTER.xml
-    IMAGE_NAME="${COUNTER}_${i}"
-    adb exec-out screencap -p > ./data/screenshots/$IMAGE_NAME.png
+    echo "dumping stats"
+    adb exec-out uiautomator dump /dev/tty >> ./data/stats/${COUNTER}/${i}.xml
+    adb exec-out screencap -p > ./data/screenshots/${COUNTER}/${i}.png
+    echo "resuming shorts"
     adb shell input tap $tap_x2 $tap_y2
-    echo -e "\n\n" >> ./data/stats/$COUNTER.xml
+    
     sleep $intermittent_wait
   done
   swipe_x_start=$((500 + RANDOM % 50 - 25))
@@ -30,9 +33,15 @@ do
   swipe_y_end=$((1000 + RANDOM % 50 - 25))
   duration=$((RANDOM % 100 + 40))
   echo "swiping up"
+  echo "\n*************"
   # Swipe to next short with slight diagonal movement
   adb shell input touchscreen swipe $swipe_x_start $swipe_y_start $swipe_x_end $swipe_y_end $duration
   sleep 1
+
+  ## Launch the python script to parse the current short data in the background
+  cd automate
+  python store_data.py -p $COUNTER &
+  cd ..
   # Increment counter
   ((COUNTER++))
 done
