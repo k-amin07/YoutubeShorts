@@ -2,14 +2,16 @@ import xml.etree.ElementTree as ET
 
 
 #defining the column headers here
-headers = ['Device', 'CPN', 'Video ID' , 'Video format', 'Audio format', 'Volume/Normalized', 'Bandwidth', 'Readahead', 'Viewport', 'Dropped frames' , 'Mystery Text']
+headers = ['Device', 'CPN', 'Video ID' , 'Ad','Link', 'Video format', 'Audio format', 'Volume/Normalized', 'Bandwidth', 'Readahead', 'Viewport', 'Dropped frames' , 'Mystery Text']
 resources = ['device_info','cpn','video_id','video_format','audio_format','volume','bandwidth_estimate','readahead', 'viewport', 'dropped_frames','mystery_text']
 
 class data:
-    def __init__(self,device_info,cpn,video_id,video_format,audio_format,volume,bandwidth_estimate,readahead,viewport,dropped_frames,mystery_text):
+    def __init__(self,device_info,cpn,video_id,ad,link,video_format,audio_format,volume,bandwidth_estimate,readahead,viewport,dropped_frames,mystery_text):
         self.device_info = device_info
         self.cpn = cpn
         self.video_id = video_id
+        self.ad = ad
+        self.link = link
         self.video_format = video_format
         self.audio_format = audio_format
         self.volume = volume
@@ -23,13 +25,13 @@ class data:
         if hasattr(self, attribute):
             # Set the attribute to the new value
             setattr(self, attribute, value)
-            print(f"Attribute '{attribute}' updated to '{value}'")
-        else:
-            print(f"Attribute '{attribute}' does not exist in the class")
+            # print(f"Attribute '{attribute}' updated to '{value}'")
+        # else:
+            # print(f"Attribute '{attribute}' does not exist in the class")
 
     def to_csv_record(self):
     # Get class attributes in the order they are defined
-        attribute_values = [str(getattr(self, attr)) for attr in ['device_info', 'cpn', 'video_id', 'video_format', 'audio_format', 'volume', 'bandwidth_estimate', 'readahead', 'viewport', 'dropped_frames', 'mystery_text']]
+        attribute_values = [str(getattr(self, attr)) for attr in ['device_info', 'cpn', 'video_id','ad','link', 'video_format', 'audio_format', 'volume', 'bandwidth_estimate', 'readahead', 'viewport', 'dropped_frames', 'mystery_text']]
     
     # Construct CSV record with only attribute values
         csv_record = ','.join(attribute_values)
@@ -42,7 +44,7 @@ class data:
 def parse_xml_to_csv(xml_file):
 
     # Initialize an empty data object
-    current_data = data('', '', '', '', '', '', '', '', '', '', '')
+    current_data = data('', '', '', '', '', '', '', '', '', '', '','','')
 
     # Parse the XML file
     tree = ET.parse(xml_file)
@@ -50,6 +52,11 @@ def parse_xml_to_csv(xml_file):
 
     # Iterate over relevant nodes
     for node in root.iter():
+        # print(node.attrib.get('resource-id'), "             " , node.attrib.get('text'))
+        if (node.attrib.get('resource-id') == 'com.google.android.youtube:id/reel_dyn_share'):
+            # print("This is possible an add", )
+            current_data.add_value('ad', 'Yes')
+
         if (node.attrib.get('resource-id') and (node.attrib.get('text'))):
             parts = node.attrib.get('resource-id').split('/')
             # Get the last part after the last '/'
@@ -58,6 +65,8 @@ def parse_xml_to_csv(xml_file):
             param = last_part[last_part.rfind('/') + 1:]
             if (param in resources):
                 current_data.add_value(param, node.attrib.get('text'))
+                if (param == 'video_id'):
+                    current_data.add_value('link', f'https://www.youtube.com/shorts/{node.attrib.get("text")}')
 
     # Generate CSV record
     csv_record = current_data.to_csv_record()

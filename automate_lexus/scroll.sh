@@ -5,8 +5,8 @@ COUNTER=1
 intermittent_wait=5
 #14
 
-# for j in {1..3}
-  # do
+for j in {1..30}
+  do
   for i in {1..2}
   do
     tap_x=$((400 + RANDOM % 50 - 25))
@@ -36,4 +36,4 @@ intermittent_wait=5
   sleep 1
   # Increment counter
   ((COUNTER++))
-  # done
+  done

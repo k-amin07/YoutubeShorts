@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from parse import parse_xml_to_csv,remove_trailing_message
 import csv
 
-headers = ['Device', 'CPN', 'Video ID' , 'Video format', 'Audio format', 'Volume/Normalized', 'Bandwidth', 'Readahead', 'Viewport', 'Dropped frames' , 'Mystery Text']
+headers = ['Device', 'CPN', 'Video ID' ,'Advertisement','Short Link', 'Video format', 'Audio format', 'Volume/Normalized', 'Bandwidth', 'Readahead', 'Viewport', 'Dropped frames' , 'Mystery Text']
 
 
 def process_folder(input_folder, output_file):
