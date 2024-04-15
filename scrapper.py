@@ -14,6 +14,7 @@ class Scrapper:
     def __init__(self,user_data_dir=None) -> None:
         self.is_loaded = False
         self.driver = None
+        self.total_request_size = 0
         if(user_data_dir):
             self.user_data_dir = user_data_dir
         else:
@@ -52,12 +53,14 @@ class Scrapper:
 
         # Apply filter to include only the requests with YouTube's user-agent in the headers. Also exclude all calls to stats for nerds.
         input_fields = self.driver.find_elements(By.TAG_NAME, 'input')
-        input_fields[0].send_keys("~hq com.google.android.youtube !api/stats")
+        input_fields[0].send_keys("~hq com.google.android.youtube") #!api/stats")
         input_fields[0].send_keys(Keys.ENTER)
 
         self.is_loaded = True
     
     def timestamp_to_epocs(self,timestamp: str):
+        if(not timestamp):
+            return None
         converted_timestamp = datetime.strptime(timestamp,'%Y-%m-%d %H:%M:%S.%f').timestamp()
         return converted_timestamp
 
@@ -66,17 +69,17 @@ class Scrapper:
     
     def append_epoch_timestamps(self, request_data):
         request_data['latency_metrics_epochs'] = {
-            "client_connection_established": self.timestamp_to_epocs(request_data['latency_metrics']['client_connection_established'].split('(')[0]),
-            "server_connection_initiated": self.timestamp_to_epocs(request_data['latency_metrics']['server_connection_initiated'].split('(')[0]),
-            "server_tcp_handshake": self.timestamp_to_epocs(request_data['latency_metrics']['server_tcp_handshake'].split('(')[0]),
-            "server_tls_handshake": self.timestamp_to_epocs(request_data['latency_metrics']['server_tls_handshake'].split('(')[0]),
-            "client_tls_handshake": self.timestamp_to_epocs(request_data['latency_metrics']['client_tls_handshake'].split('(')[0]),
-            "first_request_byte": self.timestamp_to_epocs(request_data['latency_metrics']['first_request_byte']),
-            "request_complete": self.timestamp_to_epocs(request_data['latency_metrics']['request_complete'].split('(')[0]),
+            "client_connection_established": self.timestamp_to_epocs(request_data['latency_metrics']['client_connection_established'].split('(')[0] if request_data['latency_metrics']['client_connection_established'] else None),
+            "server_connection_initiated": self.timestamp_to_epocs(request_data['latency_metrics']['server_connection_initiated'].split('(')[0] if request_data['latency_metrics']['server_connection_initiated'] else None),
+            "server_tcp_handshake": self.timestamp_to_epocs(request_data['latency_metrics']['server_tcp_handshake'].split('(')[0] if request_data['latency_metrics']['server_tcp_handshake'] else None),
+            "server_tls_handshake": self.timestamp_to_epocs(request_data['latency_metrics']['server_tls_handshake'].split('(')[0] if request_data['latency_metrics']['server_tls_handshake'] else None),
+            "client_tls_handshake": self.timestamp_to_epocs(request_data['latency_metrics']['client_tls_handshake'].split('(')[0] if request_data['latency_metrics']['client_tls_handshake'] else None),
+            "first_request_byte": self.timestamp_to_epocs(request_data['latency_metrics']['first_request_byte'] if request_data['latency_metrics']['first_request_byte'] else None),
+            "request_complete": self.timestamp_to_epocs(request_data['latency_metrics']['request_complete'].split('(')[0] if(request_data['latency_metrics']['request_complete']) else None),
             "first_response_byte": self.timestamp_to_epocs(request_data['latency_metrics']['first_response_byte'].split('(')[0]) if request_data['latency_metrics']['first_response_byte'] else None,
             "response_complete": self.timestamp_to_epocs(request_data['latency_metrics']['response_complete'].split('(')[0]) if  request_data['latency_metrics']['response_complete'] else None,
-            "client_connection_closed": self.timestamp_to_epocs(request_data['latency_metrics']['client_connection_closed'].split('(')[0]),
-            "server_connection_closed": self.timestamp_to_epocs(request_data['latency_metrics']['server_connection_closed'].split('(')[0]),
+            "client_connection_closed": self.timestamp_to_epocs(request_data['latency_metrics']['client_connection_closed'].split('(')[0] if request_data['latency_metrics']['client_connection_closed'] else None),
+            "server_connection_closed": self.timestamp_to_epocs(request_data['latency_metrics']['server_connection_closed'].split('(')[0] if request_data['latency_metrics']['server_connection_closed'] else None),
         }
 
     def extract_trace_data(self):
@@ -117,8 +120,11 @@ class Scrapper:
 
         # this is the number of flows we get on the page at a given time
         last_index = len(flows) - 2
-        extracted_data = []
-        flow_ids = []
+        if(os.path.exists('./mitm_data.pkl')):
+            with open('./mitm_data.pkl','rb') as pkl_file:
+                extracted_data = pickle.load(pkl_file)
+        else:
+            extracted_data = {}
 
         for index,flow in enumerate(flows):
             sub_elements = flow.find_elements(By.TAG_NAME,"td")
@@ -127,9 +133,11 @@ class Scrapper:
             
             flow.click()
             flow_id = self.extract_flow_id(self.driver.current_url)
-            if(flow_id in flow_ids):
+            
+            if(flow_id in extracted_data):
+                size = extracted_data[flow_id]["size_bytes"]
+                self.total_request_size += size
                 continue
-            flow_ids.append(flow_id)
             
             # Click the "timing" column
             self.driver.find_element(By.XPATH, "/html/body/div/div/div[1]/div[3]/nav/a[4]").click()
@@ -143,6 +151,22 @@ class Scrapper:
                 "latency_metrics": dict.fromkeys(mapping.values())
             }
 
+            request_size = request_data['size']
+            if(request_size and type(request_size) == type("")):
+                if('kb' in request_size):
+                    size = float(request_size.split('kb')[0]) * 1024
+                elif('mb' in request_size):
+                    size = float(request_size.split('mb')[0]) * 1024 * 1024
+                elif('b' in request_size):
+                    size = float(request_size.split('b')[0])
+                else:
+                    size = int(request_size)
+            else:
+                size = 0
+            
+            self.total_request_size += size
+            request_data["size_bytes"] = size
+
             # Get the table body
             timing_table = self.driver.find_element(By.XPATH, "/html/body/div/div/div[1]/div[3]/section/table/tbody")
             timing_table_elements = timing_table.find_elements(By.TAG_NAME,"tr")
@@ -153,7 +177,7 @@ class Scrapper:
 
             self.append_epoch_timestamps(request_data)
 
-            extracted_data.append(request_data)
+            extracted_data[flow_id] = request_data
 
 
         while(True):
@@ -167,9 +191,10 @@ class Scrapper:
                 new_element.click()
 
                 flow_id = self.extract_flow_id(self.driver.current_url)
-                if(flow_id in flow_ids):
+                if(flow_id in extracted_data):
+                    size = extracted_data[flow_id]["size_bytes"]
+                    self.total_request_size += size
                     continue
-                flow_ids.append(flow_id)
 
                 # Click the "timing" column. Sometimes there is an additonal "error" column. Handle that too.
                 timing_column = self.driver.find_element(By.XPATH, "/html/body/div/div/div[1]/div[3]/nav/a[4]") 
@@ -183,6 +208,21 @@ class Scrapper:
                     "time": self.driver.find_element(By.XPATH,"/html/body/div/div/div[1]/div[1]/table/tbody/tr[{}]/td[7]".format(last_index)).text,
                     "latency_metrics": dict.fromkeys(mapping.values())
                 }
+                request_size = request_data['size']
+                if(request_size and type(request_size) == type("")):
+                    if('kb' in request_size):
+                        size = float(request_size.split('kb')[0]) * 1024
+                    elif('mb' in request_size):
+                        size = float(request_size.split('mb')[0]) * 1024 * 1024
+                    elif('b' in request_size):
+                        size = float(request_size.split('b')[0])
+                    else:
+                        size = int(request_size)
+                else:
+                    size = 0
+                
+                self.total_request_size += size
+                request_data["size_bytes"] = size
 
                 # Get the table body
                 timing_table = self.driver.find_element(By.XPATH, "/html/body/div/div/div[1]/div[3]/section/table/tbody")
@@ -193,14 +233,23 @@ class Scrapper:
                     request_data["latency_metrics"][key] = entries[1].text.split('(')[0]
                 
                 self.append_epoch_timestamps(request_data)
-                extracted_data.append(request_data)
+                extracted_data[flow_id] = request_data
             flows = updated_data
         
-        print(len(extracted_data))
+        print(len(extracted_data.keys()))
 
         with open('mitm_data.pkl','wb') as handle:
             pickle.dump(extracted_data,handle)
+        with open('./trace_size.csv','r') as csv_handle:
+            trace = sum(1 for _ in csv_handle)
         
+        with open('./trace_size.csv','a+') as csv_handle:
+            if(trace == 0):
+                csv_handle.write("flow_number, size\n")
+                trace += 1
+            csv_handle.write("{},{}mb\n".format(trace, round(self.total_request_size/1024/1024,3)))
+        print(self.total_request_size)
+        self.driver.quit()
 
     def __del__(self):
         self.driver.quit()
