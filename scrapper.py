@@ -8,6 +8,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 from datetime import datetime
+from tld import get_tld
+import matplotlib.pyplot as plt
 import pickle
 
 class Scrapper:
@@ -15,6 +17,8 @@ class Scrapper:
         self.is_loaded = False
         self.driver = None
         self.total_request_size = 0
+        self.url_freq = {}
+        self.url_data = {}
         if(user_data_dir):
             self.user_data_dir = user_data_dir
         else:
@@ -81,6 +85,37 @@ class Scrapper:
             "client_connection_closed": self.timestamp_to_epocs(request_data['latency_metrics']['client_connection_closed'].split('(')[0] if request_data['latency_metrics']['client_connection_closed'] else None),
             "server_connection_closed": self.timestamp_to_epocs(request_data['latency_metrics']['server_connection_closed'].split('(')[0] if request_data['latency_metrics']['server_connection_closed'] else None),
         }
+
+    def get_url_keyword(self, request_url):
+        if("reel_item_watch" in request_url):
+            url = "reel_item_watch"
+        elif("log_event" in request_url):
+            url = "log_event"
+        elif("reel_watch_sequence" in request_url):
+            url = "reel_watch_sequence"
+        elif("stats" in request_url):
+            url = "stats"
+        elif("i.ytimg.com" in request_url):
+            url = "ytimg"
+        elif("ggpht.com" in request_url):
+            url = "profile_img"
+        elif("videoplayback" in request_url):
+            url = "video_playback"
+        elif("initplayback" in request_url):
+            url = "init_playback"
+        elif("doubleclick" in request_url):
+            url = "doubleclick"
+        elif("pagead" in request_url):
+            url = "pagead"
+        elif("ptracking" in request_url):
+            url = "ptracking"
+        else:
+            domain = get_tld(request_url, as_object=True)
+            url = domain.subdomain + domain.fld + domain.parsed_url[2]
+        
+        return url
+        
+            
 
     def extract_trace_data(self):
         mapping = {
@@ -166,7 +201,7 @@ class Scrapper:
             
             self.total_request_size += size
             request_data["size_bytes"] = size
-
+            
             # Get the table body
             timing_table = self.driver.find_element(By.XPATH, "/html/body/div/div/div[1]/div[3]/section/table/tbody")
             timing_table_elements = timing_table.find_elements(By.TAG_NAME,"tr")
@@ -178,6 +213,21 @@ class Scrapper:
             self.append_epoch_timestamps(request_data)
 
             extracted_data[flow_id] = request_data
+
+            
+            url = self.get_url_keyword(request_data["url"])
+            if(url in self.url_freq):
+                self.url_freq[url] += 1
+            else:
+                self.url_freq[url] = 1
+
+            if(request_data['size_bytes'] == 0):
+                request_data['size_bytes'] += len(request_data["url"])
+            
+            if(url in self.url_data):
+                self.url_data[url] += request_data['size_bytes']
+            else:
+                self.url_data[url] = request_data['size_bytes']
 
 
         while(True):
@@ -195,7 +245,6 @@ class Scrapper:
                     size = extracted_data[flow_id]["size_bytes"]
                     self.total_request_size += size
                     continue
-
                 # Click the "timing" column. Sometimes there is an additonal "error" column. Handle that too.
                 timing_column = self.driver.find_element(By.XPATH, "/html/body/div/div/div[1]/div[3]/nav/a[4]") 
                 if(timing_column.text != 'Timing'):
@@ -234,11 +283,62 @@ class Scrapper:
                 
                 self.append_epoch_timestamps(request_data)
                 extracted_data[flow_id] = request_data
+
+                url = self.get_url_keyword(request_data["url"])
+                if(url in self.url_freq):
+                    self.url_freq[url] += 1
+                else:
+                    self.url_freq[url] = 1
+                
+                if(request_data['size_bytes'] == 0):
+                    request_data['size_bytes'] += len(request_data[url])
+
+                if(url in self.url_data):
+                    self.url_data[url] += request_data['size_bytes']
+                else:
+                    self.url_data[url] = request_data['size_bytes']
+                
             flows = updated_data
+
+        url_freq_urls = list(self.url_freq.keys())
+        values = list(self.url_freq.values())
+
+        max_label_length = 15
+        truncated_labels = [label[:max_label_length] + '...' if len(label) > max_label_length else label for label in url_freq_urls]
+
+
+        plt.figure(figsize=(8.54,4.80))
+        plt.xticks(rotation=45, ha='right')
+
+        plt.bar(range(len(self.url_freq)), values, tick_label=truncated_labels)
+        
+        plt.title("URL Frequency Distribution")
+        plt.xlabel("URLs")
+        plt.ylabel("Frequency")
+        plt.tight_layout()
+        plt.autoscale()
+
+        
+        url_data_urls = list(self.url_data.keys())
+        values = list(map(lambda x: round(x/1024,3), self.url_data.values()))
+
+        truncated_labels = [label[:max_label_length] + '...' if len(label) > max_label_length else label for label in url_data_urls]
+
+        plt.figure(figsize=(8.54,4.80))
+        plt.xticks(rotation=45, ha='right')
+
+        plt.bar(range(len(self.url_data)), values, tick_label=truncated_labels)
+
+        plt.title("URL Data Distribution")
+        plt.xlabel("URLs")
+        plt.ylabel("Data (KB)")
+        plt.tight_layout()
+        plt.autoscale()
+
         
         print(len(extracted_data.keys()))
 
-        with open('mitm_data.pkl','wb') as handle:
+        with open('./mitm_data.pkl','wb') as handle:
             pickle.dump(extracted_data,handle)
         with open('./trace_size.csv','r') as csv_handle:
             trace = sum(1 for _ in csv_handle)
@@ -250,6 +350,8 @@ class Scrapper:
             csv_handle.write("{},{}mb\n".format(trace, round(self.total_request_size/1024/1024,3)))
         print(self.total_request_size)
         self.driver.quit()
+
+        plt.show()
 
     def __del__(self):
         self.driver.quit()
