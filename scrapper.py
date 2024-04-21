@@ -309,7 +309,7 @@ class Scrapper:
                     self.url_freq[url] = 1
                 
                 if(request_data['size_bytes'] == 0):
-                    request_data['size_bytes'] += len(request_data[url])
+                    request_data['size_bytes'] += len(request_data["url"])
 
                 if(url in self.url_data):
                     self.url_data[url] += request_data['size_bytes']
