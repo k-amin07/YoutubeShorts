@@ -178,9 +178,9 @@ class Scrapper:
                 else:
                     self.url_freq[url] = 1
                 if(url in self.url_data):
-                    self.url_data[url] += request_data['size_bytes']
+                    self.url_data[url] += extracted_data[flow_id]['size_bytes']
                 else:
-                    self.url_data[url] = request_data['size_bytes']
+                    self.url_data[url] = extracted_data[flow_id]['size_bytes']
                 continue
             
             # Click the "timing" column
@@ -259,9 +259,9 @@ class Scrapper:
                     else:
                         self.url_freq[url] = 1
                     if(url in self.url_data):
-                        self.url_data[url] += request_data['size_bytes']
+                        self.url_data[url] += extracted_data[flow_id]['size_bytes']
                     else:
-                        self.url_data[url] = request_data['size_bytes']
+                        self.url_data[url] = extracted_data[flow_id]['size_bytes']
                     continue
                 # Click the "timing" column. Sometimes there is an additonal "error" column. Handle that too.
                 timing_column = self.driver.find_element(By.XPATH, "/html/body/div/div/div[1]/div[3]/nav/a[4]") 
@@ -327,6 +327,7 @@ class Scrapper:
 
         plt.figure(figsize=(8.54,4.80))
         plt.xticks(rotation=45, ha='right')
+        plt.yscale('log')
 
         plt.bar(range(len(self.url_freq)), values, tick_label=truncated_labels)
         
@@ -344,6 +345,7 @@ class Scrapper:
 
         plt.figure(figsize=(8.54,4.80))
         plt.xticks(rotation=45, ha='right')
+        plt.yscale('log')
 
         plt.bar(range(len(self.url_data)), values, tick_label=truncated_labels)
 
