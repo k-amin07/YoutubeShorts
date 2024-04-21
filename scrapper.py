@@ -172,6 +172,15 @@ class Scrapper:
             if(flow_id in extracted_data):
                 size = extracted_data[flow_id]["size_bytes"]
                 self.total_request_size += size
+                url = self.get_url_keyword(extracted_data[flow_id]["url"])
+                if(url in self.url_freq):
+                    self.url_freq[url] += 1
+                else:
+                    self.url_freq[url] = 1
+                if(url in self.url_data):
+                    self.url_data[url] += request_data['size_bytes']
+                else:
+                    self.url_data[url] = request_data['size_bytes']
                 continue
             
             # Click the "timing" column
@@ -244,6 +253,15 @@ class Scrapper:
                 if(flow_id in extracted_data):
                     size = extracted_data[flow_id]["size_bytes"]
                     self.total_request_size += size
+                    url = self.get_url_keyword(extracted_data[flow_id]["url"])
+                    if(url in self.url_freq):
+                        self.url_freq[url] += 1
+                    else:
+                        self.url_freq[url] = 1
+                    if(url in self.url_data):
+                        self.url_data[url] += request_data['size_bytes']
+                    else:
+                        self.url_data[url] = request_data['size_bytes']
                     continue
                 # Click the "timing" column. Sometimes there is an additonal "error" column. Handle that too.
                 timing_column = self.driver.find_element(By.XPATH, "/html/body/div/div/div[1]/div[3]/nav/a[4]") 
