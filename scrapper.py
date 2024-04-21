@@ -327,7 +327,6 @@ class Scrapper:
 
         plt.figure(figsize=(8.54,4.80))
         plt.xticks(rotation=45, ha='right')
-        plt.yscale('log')
 
         plt.bar(range(len(self.url_freq)), values, tick_label=truncated_labels)
         
@@ -345,7 +344,6 @@ class Scrapper:
 
         plt.figure(figsize=(8.54,4.80))
         plt.xticks(rotation=45, ha='right')
-        plt.yscale('log')
 
         plt.bar(range(len(self.url_data)), values, tick_label=truncated_labels)
 
