@@ -336,6 +336,21 @@ class Scrapper:
         plt.tight_layout()
         plt.autoscale()
 
+        # new code for box plot
+        url_freq_urls = list(self.url_freq.keys())
+        data_values = [self.url_freq[url] for url in url_freq_urls]
+        max_label_length = 15
+        truncated_labels = [label[:max_label_length] + '...' if len(label) > max_label_length else label for label in url_freq_urls]
+        plt.figure(figsize=(8.54,4.80))
+        plt.xticks(rotation=45, ha='right')
+        plt.yscale('log')
+        plt.boxplot(data_values, labels=truncated_labels)  
+        plt.title("URL Frequency Distribution")
+        plt.xlabel("URLs")
+        plt.ylabel("Frequency")
+        plt.tight_layout()
+        plt.autoscale()
+        plt.show()
         
         url_data_urls = list(self.url_data.keys())
         values = list(map(lambda x: round(x/1024,3), self.url_data.values()))
@@ -353,7 +368,20 @@ class Scrapper:
         plt.tight_layout()
         plt.autoscale()
 
-        
+         # new code for box and whisker plot
+        url_freq_urls = list(self.url_freq.keys())
+        data_values = [self.url_freq[url] for url in url_freq_urls] 
+        max_label_length = 15
+        truncated_labels = [label[:max_label_length] + '...' if len(label) > max_label_length else label for label in url_freq_urls]
+        plt.figure(figsize=(8.54,4.80))
+        plt.xticks(range(len(truncated_labels)), truncated_labels, rotation=45, ha='right')
+        plt.yscale('log')
+        plt.boxplot(data_values)
+        plt.title("URL Frequency Distribution")
+        plt.xlabel("URLs")
+        plt.ylabel("Frequency")
+        plt.tight_layout()
+        plt.show()
         print(len(extracted_data.keys()))
 
         with open('./mitm_data.pkl','wb') as handle:
