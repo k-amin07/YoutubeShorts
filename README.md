@@ -1,5 +1,5 @@
 # YoutubeShorts
-Youtube shorts project for Topics in Internet Research Course 
+Youtube shorts project for Topics in Internet Research Course. The project report can be found [here](https://www.overleaf.com/read/fpznftpwxvps#da384a).
 
 ## Currently Working Approaches
 ### Screen Recording
